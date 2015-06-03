@@ -3,7 +3,7 @@
 Plugin Name: RoundCloud Monetize
 Plugin URI: http://yourcloudaround.com/en/
 Description:  RoundCloud Monetize plugin
-Version: 1.0
+Version: 1.0.1
 Author:RoundCloud
 Author URI: http://yourcloudaround.com/en/
 License: GPL2
@@ -37,12 +37,16 @@ function rc_monetize_activation() {
 }
 
 function rc_monetize_deactivation() {
+	delete_option('rc_monetize_PanAccountId');
+	delete_option('rc_monetize_PanEmail');
+	delete_option('rc_monetize_PanAccount');
+	delete_option('rc_monetize_PanPassword');
+	delete_option('rc_monetize_shortcode_id');
 
 }
 
 function rc_monetize_full_logout(){
-	rc_deactivation();
-	rc_activation();
+	delete_option('rc_monetize_shortcode_id');
 	delete_option('rc_monetize_PanAccountId');
 	delete_option('rc_monetize_PanEmail');
 	delete_option('rc_monetize_PanAccount');
@@ -289,13 +293,15 @@ array( 'description' => __( 'RoundCloud Banner Rotator', 'RoundCloud_Banner_Rota
 public function widget( $args, $instance ) {
 
 $id = get_option("rc_monetize_shortcode_id");
+
+if($id !== false){
 global $wpdb;
 	$table_name = $wpdb->prefix.'rc_monetize_rotators';
 	
 	$querystr = $wpdb->prepare("SELECT RotatorCode FROM ".$table_name." WHERE id =%d",$id);
 	
 	$codes = $wpdb->get_results($querystr);
-
+if($codes->length!==0){
 	foreach($codes as $code) {
 				
 			$data = $code;	
@@ -317,7 +323,8 @@ global $wpdb;
 	$result = $new_dom->saveHTML();
 
 	echo $result;
-
+}
+}
 	
 }
 
@@ -348,7 +355,7 @@ return $instance;
 function roundcloud_load_widget() {
 	register_widget( 'roundcloud_monetize_widget' );
 }
-
+add_action('init', 'rc_monetize_add_my_script');
 add_action( 'widgets_init', 'roundcloud_load_widget' );
 add_shortcode( 'rc_monetize_rotator', 'get_rc_monetize_rotator' );
 add_action('wp_ajax_nopriv_rc_monetizeget_affiliate_id', 'rc_monetize_get_affiliate_id_front_end' );
@@ -360,7 +367,7 @@ add_action('wp_ajax_rc_monetize_get_option', 'rc_monetize_get_option' );
 add_action('wp_ajax_rc_monetize_logout', 'rc_monetize_full_logout' );
 add_action('wp_ajax_rc_monetize_write_rotator_code_to_db', 'rc_monetize_write_rotator_code_to_db' );
 add_action('plugins_loaded', 'rc_monetize_init');
-add_action('init', 'rc_monetize_add_my_script');
+
 add_action('admin_menu','rc_monetize_userlist_init');
 
 ?>

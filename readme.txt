@@ -4,7 +4,7 @@ Donate link:
 Tags: monetize, banners, banner, rotator, earn money, site monetization, site monetisation, affiliate, widget, widgets, wp widget, wordpress widget, widgets for wp, affiliates manager, affiliate marketing, affiliate plugin, affiliates, referral, affiliate program, ads, advertising, affiliate tool, affiliate tools, e-commerce, ecommerce, tracking, track affiliates, affiliate software, affiliate campaign, affiliate network, cpa marketing, cpc, cps, cpm, offers
 Requires at least: 3.5
 Tested up to: 4.2.2
-Stable tag: 1.0
+Stable tag: 1.0.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
